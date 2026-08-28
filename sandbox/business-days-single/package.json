@@ -1,0 +1,13 @@
+{
+  "name": "business-days",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "開始日と終了日の間の営業日数を数えるCLI",
+  "bin": {
+    "business-days": "src/cli.js"
+  },
+  "scripts": {
+    "test": "node test/businessDays.test.js"
+  }
+}
