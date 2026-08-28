@@ -6,7 +6,7 @@
   "description": "開始日と終了日の間の営業日数を数えるコマンド",
   "bin": { "business-days": "./src/cli.js" },
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "acceptance": "bash acceptance.sh"
   }
 }

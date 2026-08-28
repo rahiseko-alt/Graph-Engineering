@@ -39,10 +39,10 @@ description: "Task list for 営業日を数えるコマンド"
 
 **Independent Test**: 不正な日付を渡して終了コードを見るだけで検証できる
 
-- [ ] T003 [P] [US2] `sandbox/business-days/src/parse-date.js` に、`YYYY-MM-DD` の検査と年月日への変換を実装する。書式違い・存在しない日付・年の範囲外を弾く（FR-004）
-- [ ] T004 [P] [US2] `sandbox/business-days/src/holidays.js` に、休業日ファイルの読み込みを実装する。読めない行が1つでもあれば止める（FR-005）
-- [ ] T005 [P] [US2] `sandbox/business-days/test/parse-date.test.js` を書く（`2026-02-30` / `2026/09/01` / `abc` / 空文字 / 年の範囲外）
-- [ ] T006 [P] [US2] `sandbox/business-days/test/holidays.test.js` を書く（読めない行あり / ファイルなし / 重複あり / 期間外の日付あり）
+- [X] T003 [P] [US2] `sandbox/business-days/src/parse-date.js` に、`YYYY-MM-DD` の検査と年月日への変換を実装する。書式違い・存在しない日付・年の範囲外を弾く（FR-004）
+- [X] T004 [P] [US2] `sandbox/business-days/src/holidays.js` に、休業日ファイルの読み込みを実装する。読めない行が1つでもあれば止める（FR-005）
+- [X] T005 [P] [US2] `sandbox/business-days/test/parse-date.test.js` を書く（`2026-02-30` / `2026/09/01` / `abc` / 空文字 / 年の範囲外）
+- [X] T006 [P] [US2] `sandbox/business-days/test/holidays.test.js` を書く（読めない行あり / ファイルなし / 重複あり / 期間外の日付あり）
 
 **Checkpoint**: 想定外の値で止まることが単体テストで確認できる
 
@@ -54,10 +54,10 @@ description: "Task list for 営業日を数えるコマンド"
 
 **Independent Test**: コマンドを1回実行し、標準出力の数値を確認する
 
-- [ ] T007 [US1] `sandbox/business-days/src/count.js` に、両端を含む期間の営業日数を数える処理を実装する。土日と休業日を除く（FR-001 / FR-002 / FR-003）。T002 に依存
-- [ ] T008 [US1] `sandbox/business-days/test/count.test.js` を書く（spec.md 第2節の3件と、期間外・重複の休業日）
-- [ ] T009 [US1] `sandbox/business-days/src/cli.js` に、コマンドの入口を実装する。開始日が終了日より後なら止める（FR-004）。T003 / T004 / T007 に依存
-- [ ] T010 [US1] `sandbox/business-days/acceptance.sh` を書き、spec.md 第2節の5件（US1 の3件と US2 の2件）をコマンド実行で確かめる。1件でも落ちたら終了コード `1`
+- [X] T007 [US1] `sandbox/business-days/src/count.js` に、両端を含む期間の営業日数を数える処理を実装する。土日と休業日を除く（FR-001 / FR-002 / FR-003）。T002 に依存
+- [X] T008 [US1] `sandbox/business-days/test/count.test.js` を書く（spec.md 第2節の3件と、期間外・重複の休業日）
+- [X] T009 [US1] `sandbox/business-days/src/cli.js` に、コマンドの入口を実装する。開始日が終了日より後なら止める（FR-004）。T003 / T004 / T007 に依存
+- [X] T010 [US1] `sandbox/business-days/acceptance.sh` を書き、spec.md 第2節の5件（US1 の3件と US2 の2件）をコマンド実行で確かめる。1件でも落ちたら終了コード `1`
 
 **Checkpoint**: 検収条件5件がコマンド実行で確認できる
 
@@ -65,8 +65,8 @@ description: "Task list for 営業日を数えるコマンド"
 
 ## Phase 5: Polish
 
-- [ ] T011 `sandbox/business-days/README.md` に使い方を3行で書く
-- [ ] T012 `acceptance.sh` と `node --test` の両方が緑になることを確認する
+- [X] T011 `sandbox/business-days/README.md` に使い方を3行で書く
+- [X] T012 `acceptance.sh` と `node --test` の両方が緑になることを確認する
 
 ---
 
