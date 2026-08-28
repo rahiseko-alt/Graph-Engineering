@@ -34,10 +34,10 @@
 
 ## 着手判定
 
-- [ ] CHK001 **rough** — 細部を作り込んでいない。画面構成・技術選定・ファイル配置・実装順序を仕様側で固定していない（[Shape Up](https://basecamp.com/shapeup/1.1-chapter-02)）
-- [ ] CHK002 **solved** — macro level で主要な要素がつながっており、明白な Open Question（`[NEEDS CLARIFICATION]`）と目に見える Rabbit Hole を減らしてある（[Shape Up](https://basecamp.com/shapeup/1.1-chapter-02)）
-- [ ] CHK003 **bounded** — Appetite（今回この問題に使う上限）と No Gos（今回やらないこと）が書かれており、どこで止めるかが分かる（[Shape Up](https://basecamp.com/shapeup/1.2-chapter-03)）
-- [ ] CHK004 **critical assumptions checked** — 「これが偽だったら、この Solution を作る意味が無くなるか？」が YES の Assumption について Evidence がある。Critical Assumptions 表に `未確認` の行が残っていない（[Lean Startup](https://leanstartup.co/wp-content/uploads/2023/06/ebook-NavigatingSquiggles-Final_61523.pdf)）
+- [x] CHK001 **rough** — 細部を作り込んでいない。画面構成・技術選定・ファイル配置・実装順序を仕様側で固定していない（[Shape Up](https://basecamp.com/shapeup/1.1-chapter-02)）
+- [x] CHK002 **solved** — macro level で主要な要素がつながっており、明白な Open Question（`[NEEDS CLARIFICATION]`）と目に見える Rabbit Hole を減らしてある（[Shape Up](https://basecamp.com/shapeup/1.1-chapter-02)）
+- [x] CHK003 **bounded** — Appetite（今回この問題に使う上限）と No Gos（今回やらないこと）が書かれており、どこで止めるかが分かる（[Shape Up](https://basecamp.com/shapeup/1.2-chapter-03)）
+- [x] CHK004 **critical assumptions checked** — 「これが偽だったら、この Solution を作る意味が無くなるか？」が YES の Assumption について Evidence がある。Critical Assumptions 表に `未確認` の行が残っていない（[Lean Startup](https://leanstartup.co/wp-content/uploads/2023/06/ebook-NavigatingSquiggles-Final_61523.pdf)）
 
 ## Notes
 
@@ -45,3 +45,10 @@
 - Leave items unchecked when they still require clarification, correction, or reviewer evaluation
 - `/speckit-implement` reads checklist checkbox state as a gate and must not modify markers
 - 未チェックのまま進むと決めるのは、残余 Risk を受容して Build へ進む Bet である。その判断は記録に残す
+
+## 判定の根拠（2026-08-28）
+
+- **CHK001 rough**: 仕様側で画面構成・技術選定・ファイル配置・実装順序を固定していない。技術の選定は plan.md 側に置いた
+- **CHK002 solved**: `[NEEDS CLARIFICATION]` 0件。Rabbit Holes のうち最大のもの（局所再実行の成立可否）は research.md 決定3 で方式を1つ捨てて解消した
+- **CHK003 bounded**: Appetite（既存品の組み合わせで成立する範囲まで／2週間）と No Gos 4件を記載
+- **CHK004 critical assumptions checked**: CA-001 / CA-002 / CA-004 は実測で成立（docs/measurements/20260828-assumption-tests.md）。**CA-003 は「受容」**——1回の実行が終わって初めて測れるため着手前に取得できない。代わりに SC-003 を検収条件に置き、測定せずに完了と言えないようにしている
