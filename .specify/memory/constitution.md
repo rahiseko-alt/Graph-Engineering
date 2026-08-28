@@ -15,7 +15,7 @@
 3. **Lean Startup** — Critical Assumption だけ Evidence で確認する。残りは実装中に解く。
 4. **NASA の原則** — 検証していない要求を Logical Decomposition へ渡さない。
 5. **Logical Decomposition** — `/speckit-tasks` が行う。Issue Tree を自作しない。
-6. **Graph** — 依存・並列・Agent・検証・再実行の構成。
+6. **Graph** — `tasks.md` が Graph そのもの。実行は既定で `/speckit-implement`、独立作業がまとまってあるときは `/batch`（worktree 隔離・Node ごとに PR）、多数の対象や相互検証が要るときは dynamic workflow。**Agent teams と自作の Orchestrator は使わない**（理由は [`docs/design.md`](../../docs/design.md) 第4節）。
 
 ### II. 着手判定は4項目のみ
 

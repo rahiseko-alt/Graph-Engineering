@@ -18,6 +18,8 @@
 | 8 | 検収条件を [`templates/e2e/`](./templates/e2e/README.md) へ転写 | 検収条件がそのまま E2E のハッピーパスになります |
 | 9 | **門②** [`prompts/drift-detector.md`](./prompts/drift-detector.md) | 別AIが7問でずれを検知する |
 
+**7 の実行方法**は3択です。既定は `/speckit-implement`（逐次）。独立作業がまとまってあるときは `/batch`（作業を worktree で隔離し、単位ごとに PR を出す）。多数の対象へ同じ処理を掛けるときや結果を相互検証させたいときは dynamic workflow。Agent teams と自作の実行基盤は使いません（理由は [`docs/design.md`](./docs/design.md) 第4節）。
+
 仕様の書き方は既存手法の語をそのまま使います。**Problem / Appetite / Solution / Rabbit Holes / No Gos**（Shape Up）と **Desired Outcome / Opportunities / Solutions / Assumption Tests**（Opportunity Solution Tree）です。独自の名称・独自の指標を作りません。
 
 ## 中身

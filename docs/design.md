@@ -65,6 +65,39 @@ Goal Shaping の調査（`Graph Engineering Goal Shaping 中間理論レポー�
 | Q5 | 産物が原則・雛形・判定表・説明文書のみで、この機構を1本も通していない | **限界として記録。** 実案件を1本通すのは次セッションの最初の作業とし、`docs/handoff.md` に置いた。今回は工程の設置までをフェーズの区切りとする（D-8） |
 | Q6 | 「利用者確認は二択1回」に、着手判定で止まったときの続行可否という2つ目の確認が増えている | **却下（受容）。** これは残余 Risk を受容して Build へ進むかどうかの判断であり、Shape Up・Lean Startup・Opportunity Solution Tree のいずれもこれを人間の Bet として扱っている。案件数に比例して増えるのは「shaping が未完了の案件の数」であって案件数そのものではない。`.specify/memory/constitution.md` 原則 V に例外として明記した |
 
+### 2026-08-28 ⑥ Graph（実行側）の決定
+
+**自作のランナーを書きません。** `/speckit-tasks` が出す `tasks.md` が既に Graph（Phase 分割・依存順・並列マーカー `[P]`・User Story 単位のまとまり）です。したがって決めるべきことは「その `tasks.md` を、公式のどの実行機構で走らせるか」だけです。
+
+公式ドキュメントを 2026-08-28 に確認した事実（出典: https://code.claude.com/docs/en/agents ／ https://code.claude.com/docs/en/workflows）:
+
+| 機構 | 何か | 隔離 | 状態・上限 |
+|---|---|---|---|
+| Subagents | 1セッション内の委譲ワーカー。結果を要約して返す | 個別に worktree を付けられる | — |
+| Agent view (`claude agents`) | 背景セッションの一覧・監視 | **各セッションを自動で worktree へ入れる** | research preview |
+| Agent teams | Lead が複数セッションを指揮。共有タスクリストと相互メッセージ | **teammate は worktree 隔離されない**（担当ファイルを分ける必要がある） | **experimental・既定で無効** |
+| Dynamic workflows | Claude が書いた JavaScript を runtime が実行し、多数の subagent を並列・段階・検証つきで回す | agent 側で指定 | 同時16・1実行あたり1,000 agent。既定の size guideline は `medium`（15未満）。**実行中のユーザー入力を受け付けない** |
+| `/batch` | 1つの大きな変更を5〜30の worktree 隔離 subagent へ割り、それぞれが PR を出す skill | あり | subagent と worktree の**組み合わせの既製品**であり、別の協調方式ではない |
+
+**採用する順序（迷ったら上から）**
+
+1. **既定は `/speckit-implement`。** `tasks.md` の依存順どおりに逐次実行します。案件の大半はこれで足ります。**必要のない並列化を足しません**（避けるべき未来1位）。
+2. **`[P]` の独立作業がまとまってあるときは `/batch`。** 成果物単位で worktree 隔離され、Node ごとに PR が出ます。赤くなった PR がそのまま「失敗した Node」なので、そこだけ直せば済みます（Failure Localization）。
+3. **同じ処理を多数の対象へ掛けるとき、または結果を相互検証させたいときは dynamic workflow。** 「use a workflow」または `ultracode` で起動します。トークン消費が増えるため、まず小さな範囲で1回試してから広げます。
+
+**採用しないもの**
+
+- **Agent teams**: experimental かつ既定で無効。加えて teammate が worktree 隔離されないため、担当ファイルの分割を人が守る前提になります。これは「人が守るルールは0にする」（D-11）と「特定の状態でしか動かない仕組み」（避けるべき未来5位）の両方に当たります。
+- **自作の Orchestrator / State machine / Retry 機構**: 上の3つで賄えます。
+
+**Evidence Gate の位置は変えません。** 機械判定を先に全部通し、そのあとにだけ人・LLM の目を入れます。
+
+```text
+実装 → check-test-integrity.sh → check-catastrophic.sh → E2E（①〜⑥）→ 門②（別AI・7問）
+```
+
+`/batch` や workflow で並列化しても、この順序は各 Node の中で同じです。機械で判定できるものを LLM に判定させません。
+
 ### 2026-08-28 工程を1本通した結果（使い捨ての案件による実測）
 
 門②の Q3 / Q5（「機構を1本も通していない」「停止機構を起動していない」）に対して、使い捨ての案件（予約の一元確認）を1本通した。**確認後に `specs/` ごと削除している**（実装の無いルートを宣言した仕様を残すと C3 が恒久的に赤になり、検査を外す動機を作るため）。

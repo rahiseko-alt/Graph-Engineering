@@ -51,6 +51,6 @@
 
 ## 3. 次回やること (Next Steps)
 
-1. **⑥ Graph（Delivery 側）の設計。** Claude Code 公式の subagents / worktrees / `/batch` / Dynamic Workflows のどれをどこに割り当てるかを決める。ここも自作せず公式機構から取る。
+1. **⑥ Graph（Delivery 側）は決定済み。** `tasks.md` がそのまま Graph なので、実行は既定で `/speckit-implement`、独立作業がまとまってあるときは `/batch`、多数の対象や相互検証が要るときは dynamic workflow を使います。Agent teams と自作の Orchestrator は使いません。根拠と公式の上限は [`docs/design.md`](./design.md) 第4節にあります。**まだ実案件で走らせていません。**
 2. **実案件を1本、実装まで通す。** 今回の通し確認は着手判定で止まるところまでで、その先（分解 → 実装 → E2E 転写）は動かしていません。門①・門②・E2E 転写がどこで噛み合わないかは、実案件で初めて分かります。
 3. 門① と `/speckit-clarify` の役割重複は、1本回してから実際に困った場合にだけ整理する（先に整理しない）。
