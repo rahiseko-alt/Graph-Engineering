@@ -4,19 +4,30 @@
 
 ## 最初にやること
 
-1. **[`spec.md`](./spec.md) を埋める。** これがこの案件の芯です。`project-spec` スキルが手順を持っています。
-   - 第1節「誰の何が良くなるか」と第2節「検収条件」だけは、必ず埋めてから実装に入ってください。
-   - **第2節の検収条件は、そのまま E2E テストのハッピーパスになります。**
-2. 検収条件を [`templates/e2e/`](./templates/e2e/README.md) の雛形へ転写する。
-3. 実装する。
+工程は [GitHub Spec Kit](https://github.com/github/spec-kit)（公式 OSS）に載せます。**自作の要件定義手順・Issue 分解は使いません。** 手順は `project-spec` スキルが持っています。
+
+| 順 | 実行するもの | 何が起きるか |
+|---|---|---|
+| 1 | `/speckit-specify` | 仕様のドラフト。雛形は `.specify/templates/overrides/spec-template.md` |
+| 2 | `/speckit-clarify` | 未特定箇所（`[NEEDS CLARIFICATION]`）を潰す |
+| 3 | **門①** [`prompts/intent-backtranslator.md`](./prompts/intent-backtranslator.md) | 別AIが1文に戻し、**利用者は「そう／違う」の二択1回だけ**答える |
+| 4 | `/speckit-plan` | 設計 |
+| 5 | `/speckit-checklist` | 着手判定。[`templates/checklists/shaped.md`](./templates/checklists/shaped.md) を写す |
+| 6 | `/speckit-tasks` → `/speckit-analyze` | 分解と整合検査 |
+| 7 | `/speckit-implement` | 実装。**5 に未チェックが残っていると着手前に止まります** |
+| 8 | 検収条件を [`templates/e2e/`](./templates/e2e/README.md) へ転写 | 検収条件がそのまま E2E のハッピーパスになります |
+| 9 | **門②** [`prompts/drift-detector.md`](./prompts/drift-detector.md) | 別AIが7問でずれを検知する |
+
+仕様の書き方は既存手法の語をそのまま使います。**Problem / Appetite / Solution / Rabbit Holes / No Gos**（Shape Up）と **Desired Outcome / Opportunities / Solutions / Assumption Tests**（Opportunity Solution Tree）です。独自の名称・独自の指標を作りません。
 
 ## 中身
 
 | 場所 | 何か |
 |---|---|
 | [`AGENTS.md`](./AGENTS.md) | **ルールの正はこの1ファイルだけ。** 全AIが従う |
-| [`spec.md`](./spec.md) | この案件の芯（ゴール・検収条件・スコープ境界・停止4領域） |
-| `.agents/skills/` | セッションの開始/終了、spec の作り方、計画の立て方、失敗照合 |
+| [`.specify/`](./.specify/) | Spec Kit 本体。`memory/constitution.md` に実行時の原則、`templates/overrides/` に仕様の雛形 |
+| [`spec.md`](./spec.md) | 旧・単一仕様の雛形（Spec Kit 導入前の形。案件では `specs/<feature>/spec.md` を使う） |
+| `.agents/skills/` / `.claude/skills/` | セッションの開始/終了、spec の作り方、計画の立て方、失敗照合、および `speckit-*` |
 | `prompts/` | 別AIに実行させる検査（ずれ検知の門2つ、反証、受け入れ条件設計、独立レビュー） |
 | `scripts/` | テスト無効化の検出 / 破滅的な脆弱性の検査（4種） |
 | `templates/` | E2E テストと CI の雛形 |

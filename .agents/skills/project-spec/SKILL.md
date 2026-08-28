@@ -22,24 +22,32 @@ description: >-
 
 ## 手順 (Workflow)
 
-1. **`spec.md` のドラフトを作る。**
-   - リポジトリ直下の [`spec.md`](../../../spec.md) を開き、依頼文から読み取れる内容で第1〜4節を埋めます。
-   - **利用者に記入させません。** 依頼文から読み取れない箇所は、担当エージェントが最も確からしい案を書き、後の手順2で判定にかけます。
-   - 第4節の「保護対象ルート一覧」は、雛形が定める1行1ルートの形式どおりに書きます。形式が崩れると検査スクリプトが読み取れません。
+1. **`spec.md` のドラフトを作る。** 自作の手順は使わず、GitHub Spec Kit の既存コマンドに載せます。
+   - `/speckit-specify` を実行します。雛形は [`.specify/templates/overrides/spec-template.md`](../../../.specify/templates/overrides/spec-template.md) が使われます（Spec Kit の override は core より優先されます）。
+   - 埋める順序は Opportunity Solution Tree → Shape Up です。**依頼文が Solution である可能性を先に潰します。**「◯◯アプリを作りたい」は Desired Outcome ではなく Solution であることが多いため、上位へ辿って `Desired Outcome` と `Opportunities` を先に書き、そのあとで `Problem` / `Appetite` / `Solution` / `Rabbit Holes` / `No Gos` を書きます。
+   - 続けて `/speckit-clarify` を実行し、`[NEEDS CLARIFICATION]` を潰します。**利用者に記入させません。** 読み取れない箇所は担当エージェントが最も確からしい案を書き、手順2で判定にかけます。
+   - `Critical Assumptions` 表には「これが偽だったら、この Solution を作る意味が無くなるか？」が YES のものだけを書きます。NO のものは `Non-critical Assumptions` に置き、事前に調べません（Lean Startup）。
+   - 「保護対象ルート一覧」は、雛形が定める1行1ルートの形式どおりに書きます。形式が崩れると [`scripts/check-catastrophic.sh`](../../../scripts/check-catastrophic.sh) が読み取れません。該当が無い場合は `- NONE` の1行だけを書きます。
+   - **節番号 `## 2.` と `## 4.` を変更しません。** 既存2検査が読み取る固定の識別子です。
 
 2. **門①を回し、利用者に二択で提示する。**
    - 手順は [`prompts/intent-backtranslator.md`](../../../prompts/intent-backtranslator.md) に従います。本スキルには手順を複製しません（ルールの正は1つです）。
    - **フレッシュコンテキストの別エージェント**に、ドラフトの詳細指示だけを渡します。ドラフトを書いたエージェント自身に実行させません。
    - 戻ってきた1文を利用者に提示し、**「そう／違う」の二択**で答えてもらいます。
-   - **これが案件で唯一の利用者確認です。** 手順1〜4のどこにも、これ以外の確認・質問・選択肢の提示を追加しません。
+   - **これが案件で唯一の利用者確認です。** 手順1〜5のどこにも、これ以外の確認・質問・選択肢の提示を追加しません。唯一の例外は手順4で `/speckit-implement` が未チェックを検出して止まった場合で、これは残余 Risk を受容して Build へ進むかどうかの判断です。
 
 3. **判定を反映する。**
    - **「そう」**: spec 確定。以後、この `spec.md` が正です。実装・検収・スコープの判断はすべてここを参照します。
    - **「違う」**: 手順1に戻り、ドラフトを作り直します。**利用者に詳細を書かせません。** 作り直したドラフトで手順2をもう一度回します（同じゴールについて確定するまで繰り返す分は、新しい確認の追加ではありません）。
    - spec 確定後、実装に入る前の計画は [`verified-plan` スキル](../verified-plan/SKILL.md) に従います（STRICT の変更、または利用者が計画を求めた場合）。
 
-4. **検収条件を E2E へ転写する。**
-   - 確定した `spec.md` 第2節の Given / When / Then を、[`templates/e2e/README.md`](../../../templates/e2e/README.md) の雛形へそのまま写します。
+4. **着手判定を通す。**
+   - [`templates/checklists/shaped.md`](../../../templates/checklists/shaped.md) を `specs/<feature>/checklists/shaped.md` へ複写し、`/speckit-checklist` で内容をこの案件に合わせます。**項目を増やしません。** 判定は Shape Up の `rough` / `solved` / `bounded` と Lean Startup の `critical assumptions checked` の4つだけです。
+   - `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` の順に進みます。Issue Tree を自作しません。分解は `/speckit-tasks` が行います。
+   - `/speckit-implement` は未チェック項目を読み取って着手前に止まります。これが「検証していない要求を分解へ渡さない」（NASA）の実装です。**未チェックのまま進む場合は、残余 Risk を受容した判断として記録に残します。**
+
+5. **検収条件を E2E へ転写する。**
+   - 確定した `spec.md` 第2節（`## 2. User Scenarios & Testing — 検収条件`）の Given / When / Then を、[`templates/e2e/README.md`](../../../templates/e2e/README.md) の雛形へそのまま写します。
    - 第2節の文がハッピーパスの本体です。転写にあたって内容を要約・言い換えしません。差が出たときは `spec.md` 側を正とします。
 
 ## 期待値が変わったとき
