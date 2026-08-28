@@ -256,7 +256,8 @@ EXPLORE  -->  BUILD  -->  VERIFY
 ### [プロジェクト固有ルール一覧]
 
 #### D-1. この案件のゴールは `spec.md` 1枚で固定する (Acceptance-First)
-- 着手時に [`spec.md`](./spec.md) を埋め、門①で二択1回だけ確認して確定する。手順は [`project-spec` スキル](./.agents/skills/project-spec/SKILL.md)。spec が固定するのは**検収の下限であって期待値の上限ではない**。期待値が動いたら第1〜4節を更新する。
+- 工程は [GitHub Spec Kit](https://github.com/github/spec-kit) に載せる（`/speckit-specify` → `/speckit-clarify` → 門① → `/speckit-plan` → `/speckit-checklist` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement`）。**要件定義手順・Issue 分解・着手判定のゲートを自作しない。** 実行時の原則は [`.specify/memory/constitution.md`](./.specify/memory/constitution.md)、仕様の雛形は [`.specify/templates/overrides/spec-template.md`](./.specify/templates/overrides/spec-template.md)、着手判定は [`templates/checklists/shaped.md`](./templates/checklists/shaped.md)。
+- 着手時に `specs/<feature>/spec.md` を埋め、門①で二択1回だけ確認して確定する。手順は [`project-spec` スキル](./.agents/skills/project-spec/SKILL.md)。spec が固定するのは**検収の下限であって期待値の上限ではない**。期待値が動いたら更新する。
 - **第2節の検収条件がそのまま E2E のハッピーパスになる**（[`templates/e2e/`](./templates/e2e/README.md)）。検査は [`scripts/check-test-integrity.sh`](./scripts/check-test-integrity.sh) と [`scripts/check-catastrophic.sh`](./scripts/check-catastrophic.sh)。CI 雛形は [`templates/ci/acceptance.yml`](./templates/ci/acceptance.yml)。
 
 #### D-2. コミュニケーション規約 (Communication Protocol) — 永続指示

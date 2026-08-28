@@ -39,7 +39,9 @@
 #
 # 使い方:
 #   scripts/check-catastrophic.sh [SPEC] [ROOT]
-#     SPEC  案件の spec.md のパス。省略時は ROOT 配下の `spec.md` を自動探索
+#     SPEC  案件の spec.md のパス。省略時は `specs/*/spec.md` を先に探し、
+#           2件以上あれば ERROR (黙って1件選ばない)。無ければ旧位置
+#           (`spec.md` / `docs/spec.md` / `doc/spec.md`) を探す
 #     ROOT  検査対象のルート。省略時はこのスクリプトの1つ上のディレクトリ
 #   終了コード:
 #     0 = 検出ゼロ
@@ -209,16 +211,35 @@ fi
 info "C3 認証の抜けを検査する"
 
 SPEC=""
+SPEC_AMBIGUOUS=0
 if [ -n "$SPEC_ARG" ]; then
   SPEC=$SPEC_ARG
   case "$SPEC" in /*) ;; *) SPEC="$ROOT/$SPEC" ;; esac
 else
-  for cand in "$ROOT/spec.md" "$ROOT/docs/spec.md" "$ROOT/doc/spec.md"; do
-    [ -f "$cand" ] && SPEC=$cand && break
+  # Spec Kit を導入した案件では、実際の仕様は specs/<feature>/spec.md にある。
+  # ここを探さずに旧位置の spec.md だけを見ると、雛形の `- NONE` を読んで
+  # 静かに SKIP する経路ができる。それは最も危険な緑なので、specs/ を先に見る。
+  n=0
+  for cand in "$ROOT"/specs/*/spec.md; do
+    [ -f "$cand" ] || continue
+    n=$((n + 1))
+    [ "$n" -eq 1 ] && SPEC=$cand
   done
+  if [ "$n" -gt 1 ]; then
+    # どれを検査すべきかを機械が決められない。黙って1件選ぶと残りが無検査になる。
+    SPEC=""
+    SPEC_AMBIGUOUS=$n
+  fi
+  if [ -z "$SPEC" ] && [ "$SPEC_AMBIGUOUS" -eq 0 ]; then
+    for cand in "$ROOT/spec.md" "$ROOT/docs/spec.md" "$ROOT/doc/spec.md"; do
+      [ -f "$cand" ] && SPEC=$cand && break
+    done
+  fi
 fi
 
-if [ -z "$SPEC" ] || [ ! -f "$SPEC" ]; then
+if [ "$SPEC_AMBIGUOUS" -gt 0 ]; then
+  err "(spec)" "-" "C3 specs/*/spec.md が ${SPEC_AMBIGUOUS} 件ある。どれを検査するかを第1引数で明示する (黙って1件だけ選ばない)"
+elif [ -z "$SPEC" ] || [ ! -f "$SPEC" ]; then
   err "(spec)" "-" "C3 spec.md が見つからない。保護対象ルート一覧を読めないため検査できない (第1引数でパスを渡す)"
 else
   info "C3 spec: ${SPEC#$ROOT/}"

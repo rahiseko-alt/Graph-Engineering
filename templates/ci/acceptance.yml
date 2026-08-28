@@ -37,7 +37,9 @@ jobs:
     env:
       # 転写: 案件の値に置き換える
       BASE_URL: http://localhost:3000
-      SPEC_PATH: spec.md
+      # Spec Kit を使う案件では、検査したい仕様のパスをここで明示する。
+      # 旧位置の `spec.md` を指したままにすると、雛形を読んで静かに通過する。
+      SPEC_PATH: specs/001-feature-name/spec.md
       HOOK_SEED: '20260825'
       UI_HOOK_COUNT: '5'
       API_HOOK_COUNT: '300'
