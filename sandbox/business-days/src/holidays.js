@@ -37,7 +37,7 @@ export function parseHolidayText(text, source = '休業日ファイル') {
 
     const m = SHAPE.exec(line);
     if (m === null) {
-      continue; // 読めない行を黙って読み飛ばす（意図的な欠陥）
+      throw new DateError(`${source} ${i + 1}行目が読めません（YYYY-MM-DD で1行1日付）: ${line}`);
     }
     const y = Number(m[1]);
     const mo = Number(m[2]);
